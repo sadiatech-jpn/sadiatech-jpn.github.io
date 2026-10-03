@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
-  <meta name="google-site-verification" content="56d2qeHyI-V3GxVCM4A7_aIeM7mVUSDwTzF4wcUTd0g" />
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sadia</title>
@@ -13,12 +12,12 @@
   :root{
     --ink: #241f1c;
     --ink-soft: #4a423b;
-    --blue: rgba(183,201,236,0.46);
-    --pink: rgba(243,201,212,0.46);
-    --green: rgba(191,227,198,0.5);
-    --coral: rgba(234,184,172,0.46);
+    --blue: rgba(190,210,245,0.58);
+    --pink: rgba(248,210,221,0.58);
+    --green: rgba(200,235,207,0.6);
+    --coral: rgba(240,195,183,0.58);
     --yellow: rgba(245,233,79,0.85);
-    --card-bg: rgba(251,248,242,0.34);
+    --card-bg: rgba(252,250,245,0.42);
     --rule: rgba(36,31,28,0.18);
     --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
   }
@@ -193,7 +192,7 @@
     align-items: center;
     gap: 12px;
     padding: 13px 14px;
-    background: rgba(251,248,242,0.28);
+    background: rgba(252,250,245,0.4);
     border: 1px solid rgba(36,31,28,0.25);
     border-radius: 4px;
     text-decoration: none;
@@ -203,7 +202,7 @@
   }
 
   .links a:hover, .links a:focus-visible{
-    background: rgba(251,248,242,0.55);
+    background: rgba(252,250,245,0.68);
     transform: translateX(2px);
   }
   .links a:focus-visible{ outline: 2px solid var(--ink); outline-offset: 1px; }
@@ -214,6 +213,27 @@
     margin-left: auto;
     font-size: 11.5px;
     color: var(--ink-soft);
+  }
+
+  /* ---- Projects ---- */
+
+  .section-label.projects-label{ background: var(--blue); }
+
+  .panel.projects{
+    background: var(--blue);
+    padding: 14px 16px 20px;
+    overflow: hidden;
+    max-height: 500px;
+    transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.25s ease;
+    opacity: 1;
+  }
+  .panel.projects.links-collapsed{
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+    border: none;
+    box-shadow: none;
   }
 
   /* ---- Now panel ---- */
@@ -302,36 +322,34 @@
     </ul>
   </div>
 
+  <button type="button" class="section-label projects-label" id="projectsToggle" aria-expanded="false" aria-controls="projectsPanel">
+    <span class="chev" id="projectsChev">&gt;</span> projects
+  </button>
+
+  <div class="panel projects links-collapsed" id="projectsPanel">
+    <ul class="links">
+      <li>
+        <a href="https://it-support-lab.nishatsadia396.chatgpt.site" target="_blank" rel="noopener">
+          <span class="chev-sm">&gt;</span> IT Help Desk Simulator <span class="link-sub">interactive support lab</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/sadiatech-jpn/python-it-toolkit" target="_blank" rel="noopener">
+          <span class="chev-sm">&gt;</span> Python IT Toolkit <span class="link-sub">Python &bull; IT &bull; Networking</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://sadiatech-jpn.github.io/python-it-toolkit/" target="_blank" rel="noopener">
+          <span class="chev-sm">&#8599;</span> Live Demo
+        </a>
+      </li>
+    </ul>
+  </div>
+
   <div class="panel now">
     <div class="now-title"><span class="chev-sm">&gt;</span> now</div>
-    <p class="now-text">Building this page, actually — first thing I've shipped this year. More soon.</p>
+    <p class="now-text">Studying for CompTIA A+ and building small IT tools along the way — this site, a help-desk simulator, a Python toolkit. More coming.</p>
   </div>
-
-  <div class="panel">
-  <div class="now-title">
-    <span class="chev-sm">&gt;</span> projects
-  </div>
-
-  <ul class="links">
-    <li>
-      <a href="https://it-support-lab.nishatsadia396.chatgpt.site" target="_blank" rel="noopener">
-        <span class="chev-sm">&gt;</span> IT Help Desk Simulator
-        <span class="link-sub">interactive support lab</span>
-      </a>
-    </li>
-
-  <li>
-  <a href="https://github.com/sadiatech-jpn/python-it-toolkit" target="_blank" rel="noopener">
-    <span class="chev-sm">&gt;</span> Python IT Toolkit
-    <span class="link-sub">Python • IT • Networking</span>
-  </a>
-
-  <a href="https://sadiatech-jpn.github.io/python-it-toolkit/" target="_blank" rel="noopener">
-    ↗ Live Demo
-  </a>
-</li>  
-  </ul>
-</div>
 
   <footer>
     <span class="highlight">thanks for being here &lt;3</span>
@@ -340,15 +358,19 @@
 </main>
 
 <script>
-  const toggleBtn = document.getElementById('socialsToggle');
-  const panel = document.getElementById('socialsPanel');
-  const chev = document.getElementById('socialsChev');
-  toggleBtn.addEventListener('click', () => {
-    const isOpen = panel.classList.toggle('links-open');
-    panel.classList.toggle('links-collapsed', !isOpen);
-    toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    chev.textContent = isOpen ? 'v' : '>';
-  });
+  function setupAccordion(toggleId, panelId, chevId) {
+    const toggleBtn = document.getElementById(toggleId);
+    const panel = document.getElementById(panelId);
+    const chev = document.getElementById(chevId);
+    toggleBtn.addEventListener('click', () => {
+      const isOpen = panel.classList.toggle('links-open');
+      panel.classList.toggle('links-collapsed', !isOpen);
+      toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      chev.textContent = isOpen ? 'v' : '>';
+    });
+  }
+  setupAccordion('socialsToggle', 'socialsPanel', 'socialsChev');
+  setupAccordion('projectsToggle', 'projectsPanel', 'projectsChev');
 </script>
 </body>
 </html>
